@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Cookie</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .cookie {
+            width: 100px;
+            height: 60px;
+            background-color: #f5c542;
+            border-radius: 100px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .cookie:active {
+            transform: scale(0.95);
+        }
+        .crack {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background-color: #8B4513;
+            transform: skew(15deg);
+        }
+        .fortune {
+            display: none;
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="cookie" onclick="revealFortune()">
+        <div class="crack"></div>
+    </div>
+    <div class="fortune" id="fortuneMessage"></div>
+
+    <script>
+        const fortunes = [
+            "You will find great success in your endeavors.",
+            "A new opportunity is around the corner.",
+            "Happiness will come to you.",
+            "Your hard work will soon pay off.",
+            "Adventure awaits you.",
+        ];
+
+        function revealFortune() {
+            const fortuneDiv = document.getElementById('fortuneMessage');
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            fortuneDiv.textContent = fortunes[randomIndex];
+            fortuneDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
