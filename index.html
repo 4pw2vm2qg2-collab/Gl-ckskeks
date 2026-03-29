@@ -51,48 +51,51 @@
     }
 
     /* Keks-Container: exakt Mitte Bildschirm */
-    .keks-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 300px; /* max Breite */
-      height: 300px;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      cursor: pointer;
-    }
+.keks-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
 
-    .keks {
-      position: absolute;
-      width: 50%;
-      top: 0;
-      user-select: none;
-      transition: transform 1.5s ease;
-    }
+/* Beide Kekshälften nebeneinander */
+.keks {
+  position: absolute;
+  width: 50%;
+  top: 0;
+  transition: transform 1.5s ease;
+  user-select: none;
+}
 
-    .keks.left {
-      left: 0;
-      transform: translateY(0) rotate(0);
-    }
+/* Startposition: nebeneinander */
+.keks.left {
+  left: 0;
+  transform: rotate(0deg);
+}
 
-    .keks.right {
-      right: 0;
-      transform: translateY(0) rotate(0);
-    }
+.keks.right {
+  right: 0;
+  transform: rotate(0deg);
+}
 
-    .keks-container.open .keks.left {
-      transform: translateY(110px) rotate(-20deg);
-    }
+/* Animation beim Öffnen */
+.keks-container.open .keks.left {
+  transform: translate(-80px, 120px) rotate(-35deg);
+}
 
-    .keks-container.open .keks.right {
-      transform: translateY(130px) rotate(20deg);
-    }
+.keks-container.open .keks.right {
+  transform: translate(80px, 120px) rotate(35deg);
+}
 
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
+/* Bilder korrekt skalieren */
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}  
   </style>
 </head>
 <body>
@@ -101,8 +104,8 @@
   <div class="zettel" id="spruch"></div>
 
   <div class="keks-container" id="keksContainer" role="button" aria-label="Glückskeks öffnen">
-      <img src="cookie_left.png" alt="linke Keks-Hälfte">
-      <img src="cookie_right.png" alt="rechte Keks-Hälfte">
+      <img src="cookie_left.png" class="keks left" alt="linke Keks-Hälfte">
+      <img src="cookie_right.png" class="keks right" alt="rechte Keks-Hälfte">
   </div>
 
   <script>
