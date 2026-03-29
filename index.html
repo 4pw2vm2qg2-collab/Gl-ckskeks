@@ -16,15 +16,16 @@
       height: 100%;
       width: 100%;
       font-family: 'Nunito', sans-serif;
-      background-color: #fcebd0;
+      background-color: #fcebd0; /*Grün (falls keksbild noch geändert wird): e1cc96*/
       overflow: hidden;
       position: relative;
     }
 
-    .zettel {
+    /* Zettel: volle Breite, startet unsichtbar, vertikal bei 50%, rutscht auf 30% */
+   .zettel {
       position: absolute;
-      top: 40%;
       left: 0;
+      top: 12%; /* Fixe Position */
       width: 100vw;
       background: white;
       padding: 1.5em 1em;
@@ -33,26 +34,28 @@
       color: #333;
       text-align: center;
       opacity: 0;
-      transform: scaleX(0);
-      transform-origin: center;
-      transition: 
-        opacity 1.2s ease,
-        transform 1.2s ease;
-      z-index: 10;
       pointer-events: none;
+      /* Start: unten außerhalb der Position + klein */
+      transform: translateY(100%) scale(0.5);
+      transition:
+        opacity 1.5s ease,
+        transform 1.5s ease;
+      z-index: 10;
     }
 
     .zettel.active {
       opacity: 1;
-      transform: scaleX(1);
       pointer-events: auto;
+      /* Rutsche nach oben an die "top: 30%" Position */
+      transform: translateY(0) scale(1);
     }
 
+    /* Keks-Container: exakt Mitte Bildschirm */
     .keks-container {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 300px;
+      width: 300px; /* max Breite */
       height: 300px;
       transform: translate(-50%, -50%);
       z-index: 1;
@@ -64,25 +67,25 @@
       width: 50%;
       top: 0;
       user-select: none;
-      transition: transform 1.2s ease;
+      transition: transform 1.5s ease;
     }
 
     .keks.left {
       left: 0;
-      transform: translateX(0);
+      transform: translateY(0) rotate(0);
     }
 
     .keks.right {
       right: 0;
-      transform: translateX(0);
+      transform: translateY(0) rotate(0);
     }
 
     .keks-container.open .keks.left {
-      transform: translateX(-50vw);
+      transform: translateY(110px) rotate(-20deg);
     }
 
     .keks-container.open .keks.right {
-      transform: translateX(50vw);
+      transform: translateY(130px) rotate(20deg);
     }
 
     img {
