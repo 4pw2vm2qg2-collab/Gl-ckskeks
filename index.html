@@ -4,59 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortune Cookie</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .cookie {
-            width: 100px;
-            height: 60px;
-            background-color: #f5c542;
-            border-radius: 100px;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
-        }
-        .cookie:active {
-            transform: scale(0.95);
-        }
-        .crack {
-            position: absolute;
-            top: 25px;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background-color: #8B4513;
-            transform: skew(15deg);
-        }
-        .fortune {
-            display: none;
-            margin-top: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-    </style>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Nunito', sans-serif;
+      background-color: #fcebd0; /*Grün (falls keksbild noch geändert wird): e1cc96*/
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Zettel: volle Breite, startet unsichtbar, vertikal bei 50%, rutscht auf 30% */
+   .zettel {
+      position: absolute;
+      left: 0;
+      top: 12%; /* Fixe Position */
+      width: 100vw;
+      background: white;
+      padding: 1.5em 1em;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      font-size: 1.2em;
+      color: #333;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      /* Start: unten außerhalb der Position + klein */
+      transform: translateY(100%) scale(0.5);
+      transition:
+        opacity 1.5s ease,
+        transform 1.5s ease;
+      z-index: 10;
+    }
+
+    .zettel.active {
+      opacity: 1;
+      pointer-events: auto;
+      /* Rutsche nach oben an die "top: 30%" Position */
+      transform: translateY(0) scale(1);
+    }
+
+    /* Keks-Container: exakt Mitte Bildschirm */
+    .keks-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px; /* max Breite */
+      height: 300px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    .keks {
+      position: absolute;
+      width: 50%;
+      top: 0;
+      user-select: none;
+      transition: transform 1.5s ease;
+    }
+
+    .keks.left {
+      left: 0;
+      transform: translateY(0) rotate(0);
+    }
+
+    .keks.right {
+      right: 0;
+      transform: translateY(0) rotate(0);
+    }
+
+    .keks-container.open .keks.left {
+      transform: translateY(110px) rotate(-20deg);
+    }
+
+    .keks-container.open .keks.right {
+      transform: translateY(130px) rotate(20deg);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <div class="cookie" onclick="revealFortune()">
-        <div class="crack"></div>
-    </div>
-    <div class="fortune" id="fortuneMessage"></div>
 
-    <script>
-        const fortunes = [
-            "You will find great success in your endeavors.",
-            "A new opportunity is around the corner.",
-            "Happiness will come to you.",
-            "Your hard work will soon pay off.",
-            "Adventure awaits you.",
-        ];
+  <div class="zettel" id="spruch"></div>
 
-        function revealFortune() {
-            const fortuneDiv = document.getElementById('fortuneMessage');
-            const randomIndex = Math.floor(Math.random() * fortunes.length);
-            fortuneDiv.textContent = fortunes[randomIndex];
-            fortuneDiv.style.display = 'block';
-        }
-    </script>
+  <div class="keks-container" id="keksContainer" role="button" aria-label="Glückskeks öffnen">
+    <img src="https://cdn.glitch.global/5f6e7eb5-28d0-48fc-b4ba-80bda871b903/Keks%20links.png?v=1748360788624" class="keks left" alt="linke Keks-Hälfte" />
+    <img src="https://cdn.glitch.global/5f6e7eb5-28d0-48fc-b4ba-80bda871b903/Keks%20rechts.png?v=1748360804357" class="keks right" alt="rechte Keks-Hälfte" />
+  </div>
+
+  <script>
+    const sprueche = [
+      "Der beste Weg, sich selbst eine Freude zu machen, ist: zu versuchen, einem andern eine Freude zu bereiten.",
+      "Das wertvollste Geschenk eines Freundes ist die Zeit, die er mit dir verbringt!",
+      "Warte nicht immer bis andere sich entschieden haben, sondern treffe deine eigenen Entscheidungen.",
+      "Falls du auf ein Zeichen gewartet hast: HIER ist es!",
+      "Auch eine Reise von 1000 Meilen fängt mit dem ersten Schritt an.",
+      "Unerwartete Freude ist auf dem Weg zu dir",
+      "Jemand denkt gerade an dich.",
+      "Bald erwartet dich eine freudige Überraschung.",
+      "Eine unerwartete Begegnung bringt dir Freude.",
+      "Deine Träume sind näher als du denkst.",
+      "Jemand wird heute an dich denken – vielleicht sogar mit einem Lächeln.",
+      "Ein Glücksmoment wird deinen Tag erhellen.",
+      "Ein freundliches Wort kann Wunder wirken.",
+      "Die Ruhe bringt oft mehr als das Streben.",
+      "Du bist toll",
+      "Behandle dich selbst so gut, wie du andere behandelst.",
+      "Manchmal ist der beste Plan, keinen zu haben.",
+      "Man ist verloren, wenn man zu viel Zeit bekommt, an sich zu denken",
+      "Ihre Sorgen werden vergehen und das Glück wird Ihnen hold sein.",
+      "Glaub an dich, auch wenn niemand es tut.",
+      "Fehler sind nur Schritte auf dem Weg zum Erfolg.",
+      "Nicht alles, was du denkst, braucht deine Energie.",
+      "Lass los, was du nicht kontrollieren kannst.",
+      "Geduld öffnet Türen, die Eile verschließt.",
+      "Heute schaffst du alles was du dir vornimmst.",
+      "Halt die Augen auf! Dein Boyfriend wird dir bald über den Weg laufen"
+    ];
+
+    const keksContainer = document.getElementById("keksContainer");
+    const zettel = document.getElementById("spruch");
+
+    keksContainer.addEventListener("click", () => {
+      if (keksContainer.classList.contains("open")) return; // nur 1x aktivieren
+      keksContainer.classList.add("open");
+
+      const zufall = Math.floor(Math.random() * sprueche.length);
+      zettel.textContent = sprueche[zufall];
+
+      zettel.classList.add("active");
+    });
+  </script>
+
 </body>
 </html>
