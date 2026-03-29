@@ -1,27 +1,152 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <style>
-        .cookie-container {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-        }
-        .cookie-image {
-            width: 50%;
-            position: absolute;
-        }
-        .cookie-image.left {
-            left: 0;
-        }
-        .cookie-image.right {
-            right: 0;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Cookie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Nunito', sans-serif;
+      background-color: #fcebd0; /*Grün (falls keksbild noch geändert wird): e1cc96*/
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Zettel: volle Breite, startet unsichtbar, vertikal bei 50%, rutscht auf 30% */
+   .zettel {
+      position: absolute;
+      left: 0;
+      top: 12%; /* Fixe Position */
+      width: 100vw;
+      background: white;
+      padding: 1.5em 1em;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      font-size: 1.2em;
+      color: #333;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      /* Start: unten außerhalb der Position + klein */
+      transform: translateY(100%) scale(0.5);
+      transition:
+        opacity 1.5s ease,
+        transform 1.5s ease;
+      z-index: 10;
+    }
+
+    .zettel.active {
+      opacity: 1;
+      pointer-events: auto;
+      /* Rutsche nach oben an die "top: 30%" Position */
+      transform: translateY(0) scale(1);
+    }
+
+    /* Keks-Container: exakt Mitte Bildschirm */
+    .keks-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px; /* max Breite */
+      height: 300px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    .keks {
+      position: absolute;
+      width: 50%;
+      top: 0;
+      user-select: none;
+      transition: transform 1.5s ease;
+    }
+
+    .keks.left {
+      left: 0;
+      transform: translateY(0) rotate(0);
+    }
+
+    .keks.right {
+      right: 0;
+      transform: translateY(0) rotate(0);
+    }
+
+    .keks-container.open .keks.left {
+      transform: translateY(110px) rotate(-20deg);
+    }
+
+    .keks-container.open .keks.right {
+      transform: translateY(130px) rotate(20deg);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <div class="cookie-container">
-        <img src="left-cookie-image.jpg" class="cookie-image left" alt="Left Cookie">
-        <img src="right-cookie-image.jpg" class="cookie-image right" alt="Right Cookie">
-    </div>
+
+  <div class="zettel" id="spruch"></div>
+
+  <div class="keks-container" id="keksContainer" role="button" aria-label="Glückskeks öffnen">
+      <img src="cookie_left.png" alt="linke Keks-Hälfte">
+      <img src="cookie_right.png" alt="rechte Keks-Hälfte">
+  </div>
+
+  <script>
+    const sprueche = [
+      "Der beste Weg, sich selbst eine Freude zu machen, ist: zu versuchen, einem andern eine Freude zu bereiten.",
+      "Das wertvollste Geschenk eines Freundes ist die Zeit, die er mit dir verbringt!",
+      "Warte nicht immer bis andere sich entschieden haben, sondern treffe deine eigenen Entscheidungen.",
+      "Falls du auf ein Zeichen gewartet hast: HIER ist es!",
+      "Auch eine Reise von 1000 Meilen fängt mit dem ersten Schritt an.",
+      "Unerwartete Freude ist auf dem Weg zu dir",
+      "Jemand denkt gerade an dich.",
+      "Bald erwartet dich eine freudige Überraschung.",
+      "Eine unerwartete Begegnung bringt dir Freude.",
+      "Deine Träume sind näher als du denkst.",
+      "Jemand wird heute an dich denken – vielleicht sogar mit einem Lächeln.",
+      "Ein Glücksmoment wird deinen Tag erhellen.",
+      "Ein freundliches Wort kann Wunder wirken.",
+      "Die Ruhe bringt oft mehr als das Streben.",
+      "Du bist toll",
+      "Behandle dich selbst so gut, wie du andere behandelst.",
+      "Manchmal ist der beste Plan, keinen zu haben.",
+      "Man ist verloren, wenn man zu viel Zeit bekommt, an sich zu denken",
+      "Ihre Sorgen werden vergehen und das Glück wird Ihnen hold sein.",
+      "Glaub an dich, auch wenn niemand es tut.",
+      "Fehler sind nur Schritte auf dem Weg zum Erfolg.",
+      "Nicht alles, was du denkst, braucht deine Energie.",
+      "Lass los, was du nicht kontrollieren kannst.",
+      "Geduld öffnet Türen, die Eile verschließt.",
+      "Heute schaffst du alles was du dir vornimmst.",
+      "Halt die Augen auf! Dein Boyfriend wird dir bald über den Weg laufen"
+    ];
+
+    const keksContainer = document.getElementById("keksContainer");
+    const zettel = document.getElementById("spruch");
+
+    keksContainer.addEventListener("click", () => {
+      if (keksContainer.classList.contains("open")) return; // nur 1x aktivieren
+      keksContainer.classList.add("open");
+
+      const zufall = Math.floor(Math.random() * sprueche.length);
+      zettel.textContent = sprueche[zufall];
+
+      zettel.classList.add("active");
+    });
+  </script>
+
 </body>
 </html>
