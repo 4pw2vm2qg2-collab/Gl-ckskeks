@@ -83,17 +83,17 @@
 
 /* Animation beim Öffnen */
 .keks-container.open .keks.left {
-  transform: translateY(110px) rotate(-35deg);
+  transform: translate(-80px, 120px) rotate(-35deg);
 }
 
 .keks-container.open .keks.right {
-  transform: translateY(130px) rotate(35deg);
+  transform: translate(80px, 120px) rotate(35deg);
 }
 
 /* Bilder korrekt skalieren */
 img {
   width: 100%;
-  height: auto;
+  height: auto; /* gestauchtes bild wenn <100%*/
   display: block;
 }  
   </style>
