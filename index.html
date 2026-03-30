@@ -21,11 +21,11 @@
       position: relative;
     }
 
-    /* Zettel: volle Breite, startet unsichtbar, vertikal bei 50%, rutscht auf 30% */
+    /* Zettel: volle Breite, startet unsichtbar, vertikal bei 150%, rutscht auf 13% */
    .zettel {
       position: absolute;
       left: 0;
-      top: 13%; /* Fixe Position */
+      top: 13%; /* Fixe Position, Höhe Zettel am Ende */
       width: 100vw;
       background: white;
       padding: 1.5em 1em;
@@ -36,7 +36,7 @@
       opacity: 0;
       pointer-events: none;
       /* Start: unten außerhalb der Position + klein */
-      transform: translateY(200%) scale(0.3);
+      transform: translateY(150%) scale(0.3); /*translate: höher -> startet weiter unten bis fixe Position; niedriger -> weiter oben;; scale: >1 -> wird kleiner; <1 -> wird größer*/
       transition:
         opacity 1.5s ease,
         transform 1.5s ease;
@@ -46,7 +46,7 @@
     .zettel.active {
       opacity: 1;
       pointer-events: auto;
-      /* Rutsche nach oben an die "top: 30%" Position */
+      /* Rutsche nach oben an die "top: 13%" Position */
       transform: translateY(0) scale(1);
     }
 
@@ -83,17 +83,17 @@
 
 /* Animation beim Öffnen */
 .keks-container.open .keks.left {
-  transform: translate(-80px, 120px) rotate(-35deg);
+  transform: translateY(110px) rotate(-35deg);
 }
 
 .keks-container.open .keks.right {
-  transform: translate(80px, 120px) rotate(35deg);
+  transform: translateY(130px) rotate(35deg);
 }
 
 /* Bilder korrekt skalieren */
 img {
   width: 100%;
-  height: auto;
+  height: 55%;
   display: block;
 }  
   </style>
